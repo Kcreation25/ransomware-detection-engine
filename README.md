@@ -126,3 +126,35 @@ The dataset is imbalanced, so accuracy alone can be misleading. Review precision
 ## License
 
 Released under the MIT License. See [LICENSE](LICENSE).
+
+
+## Expected generated outputs
+
+The repository contains the source code, not pre-trained results. The `dataset/`, `models/` and `reports/` folders start with placeholders. After you add the input data and successfully run training, the project should generate:
+
+```text
+models/
+├── hybrid_model.pkl
+├── scaler.pkl
+├── encoder.pkl
+└── metadata.json
+
+reports/
+└── model_comparison.csv
+```
+
+A predictions CSV is generated when you run the prediction workflow. These files are intentionally ignored by Git so that large datasets and machine-specific model binaries are not accidentally committed. **No accuracy, F1 score or other result is claimed until you run the pipeline on the dataset.**
+
+## Windows quick-start checklist
+
+1. Install Python 3.10 or newer.
+2. Clone this repository and open the project folder in VS Code or PowerShell.
+3. Create and activate the virtual environment using the commands above.
+4. Install dependencies with `python -m pip install -r requirements.txt`.
+5. Download the BitcoinHeist dataset from UCI and place the labeled file at the path expected by `config.py`.
+6. Prepare the separate unlabeled CSV required by the Isolation Forest branch and place it at the path expected by `config.py`. Do not rename it blindly; check the configured filename first.
+7. Run `python train.py` and wait for training to finish.
+8. Confirm that model files and the model-comparison report were created.
+9. Start the dashboard with `streamlit run streamlit_app/main.py`.
+
+If training stops with a missing-file error, check the exact filenames and paths in `config.py` before changing code. Keep the original dataset and generated model files on your computer; do not upload them to a public repository unless you have checked their licensing, size and privacy implications.
