@@ -165,3 +165,28 @@ If training stops with a missing-file error, check the exact filenames and paths
 A quick prototype run was completed on a **200,000-row stratified sample**, using one class-weighted Random Forest configuration. Held-out sample metrics: **F1 0.368**, **ROC-AUC 0.869**, **PR-AUC 0.326**. These are preview results, not full-dataset benchmark claims. The confusion matrix and limitations are documented in [reports/run_summary.md](reports/run_summary.md); the model comparison is in [reports/model_comparison.csv](reports/model_comparison.csv), and calibrated model metadata is in [models/metadata.json](models/metadata.json).
 
 The supplied `no label.csv` addresses all occur in the full labeled dataset. The training code should therefore prevent overlap and fit the anomaly detector on the training split only when no independent unlabeled rows remain. The complete benchmark and live Streamlit execution have not yet been completed.
+
+## Reproducible preview run (2026-11-01)
+
+A quick prototype run was performed using a stratified 200,000-row sample from the supplied 2,916,697-row labeled dataset. The run used a Random Forest with class weighting and an Isolation Forest trained on the training split because the supplied separate unlabeled file contained no independent wallet addresses after overlap checking.
+
+| Metric | Held-out preview result |
+|---|---:|
+| Accuracy | 0.9802 |
+| Balanced accuracy | 0.6967 |
+| Precision | 0.3367 |
+| Recall | 0.4049 |
+| F1 | 0.3677 |
+| MCC | 0.3593 |
+| ROC-AUC | 0.8695 |
+| PR-AUC | 0.3262 |
+
+The run used 130,000 training, 30,000 validation and 40,000 held-out test rows. These are **prototype/sample metrics**, not full-dataset benchmark results. Because the target is imbalanced, accuracy alone is not an adequate performance measure. Review recall, precision, F1, PR-AUC and the confusion matrix together. Full run details are in [reports/run_summary.md](reports/run_summary.md), with the comparison row in [reports/model_comparison.csv](reports/model_comparison.csv).
+
+A 1,000-row prediction smoke test was also run on the supplied unlabeled file. Its output is represented by [reports/predictions_sample.csv](reports/predictions_sample.csv); predictions are model risk flags, not verified ground truth.
+
+### Generated artifacts and repository policy
+
+The fitted model binary is approximately 49 MB. It is intentionally not committed in this source repository; large generated binaries should be distributed through Git LFS or a versioned release asset. The local project bundle contains the fitted artifact. The scaler, encoder and metadata are small; metadata is committed at [models/metadata.json](models/metadata.json). Recreate the model in your environment by following the training instructions above.
+
+The labeled and unlabeled datasets are not committed. They are large third-party datasets and should be downloaded/managed separately in accordance with their source terms.

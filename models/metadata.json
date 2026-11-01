@@ -1,6 +1,10 @@
 {
+  "run_date": "2026-11-01",
+  "run_type": "quick_prototype_sample",
+  "sample_rows": 200000,
+  "split_rows": {"train": 130000, "validation": 30000, "test": 40000},
   "best_pipeline_key": "random_forest__class_weight",
-  "hybrid_weight_supervised": 0.95,
+  "hybrid_weight_supervised": 0.9500000000000001,
   "hybrid_threshold": 0.14,
   "test_metrics": {
     "accuracy": 0.980225,
@@ -13,21 +17,9 @@
     "pr_auc": 0.3262318485268982
   },
   "feature_columns": [
-    "year",
-    "day",
-    "length",
-    "weight",
-    "count",
-    "looped",
-    "neighbors",
-    "income",
-    "loop_ratio",
-    "neighbor_density",
-    "avg_income_per_tx",
-    "income_per_weight",
-    "is_short_chain",
-    "day_sin",
-    "day_cos"
+    "year", "day", "length", "weight", "count", "looped", "neighbors", "income",
+    "loop_ratio", "neighbor_density", "avg_income_per_tx", "income_per_weight",
+    "is_short_chain", "day_sin", "day_cos"
   ],
-  "run_type": "200,000-row stratified preview; not full dataset benchmark"
+  "artifact_note": "The fitted model binary is retained in the local project bundle; it is not committed to GitHub."
 }
