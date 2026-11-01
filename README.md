@@ -1,136 +1,172 @@
-# Hybrid Ransomware Detection Engine
+# 🛡️ Hybrid Ransomware Detection Engine
 
-A machine-learning research project for identifying Bitcoin wallets associated with ransomware activity. The system combines a supervised classifier with an Isolation Forest anomaly detector and calibrates their scores on a validation split.
+A machine-learning research project for identifying Bitcoin wallet addresses associated with ransomware activity. The system combines supervised classification with unsupervised anomaly detection to analyze wallet transaction patterns and generate risk predictions.
 
-> **Scope:** This project is an academic/research prototype for blockchain-risk analysis. It is not a production security product, does not monitor or block ransomware on endpoints, and its predictions should not be treated as proof of criminal activity.
+> **Project scope:** This is an academic research prototype for blockchain-risk analysis. Predictions are indicators for further investigation, not proof of criminal activity or wallet ownership.
 
-## Key features
+---
 
-- Supervised model benchmarking across tree-based classifiers.
-- Imbalance-handling strategies including class weighting and SMOTE-family samplers.
-- Unsupervised anomaly detection with Isolation Forest.
-- Validation-based calibration of ensemble weight and decision threshold.
-- Evaluation with precision, recall, F1, ROC-AUC, PR-AUC, MCC and balanced accuracy.
-- CSV prediction workflow and multi-page Streamlit dashboard.
-- Optional SHAP and LIME explainability dependencies.
+## 🚀 Features
 
-## Architecture
+- 🔍 **AI-based ransomware detection** — classifies Bitcoin wallet records as benign or potentially ransomware-associated.
+- 🤖 **Hybrid machine-learning architecture** — combines supervised classification with an Isolation Forest anomaly detector.
+- ⚖️ **Class-imbalance handling** — supports class weighting and resampling strategies such as SMOTE, ADASYN and related methods.
+- 📊 **Model evaluation** — reports accuracy, precision, recall, F1-score, ROC-AUC, PR-AUC, balanced accuracy and MCC.
+- 🧠 **Explainable AI support** — optional SHAP and LIME integrations for model interpretation.
+- 📁 **CSV prediction workflow** — scores wallet records supplied in CSV format.
+- 📈 **Interactive Streamlit dashboard** — presents prediction and evaluation insights.
+- 💾 **Local execution** — run training and predictions on your own machine after installing dependencies and preparing the data.
+
+## 📸 Screenshots
+
+Add real screenshots from your running application in the following locations:
+
+| Screen | Suggested file |
+|---|---|
+| Dashboard | `images/dashboard.png` |
+| Model evaluation | `images/evaluation.png` |
+| Prediction results | `images/predictions.png` |
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|---|---|
+| Language | Python |
+| Data processing | Pandas, NumPy |
+| Machine learning | Scikit-learn |
+| Imbalance handling | Imbalanced-learn |
+| Anomaly detection | Isolation Forest |
+| Optional model families | XGBoost, LightGBM, CatBoost |
+| Hyperparameter tuning | Optuna |
+| Explainable AI | SHAP, LIME |
+| Dashboard | Streamlit |
+| Visualization | Plotly |
+| Model persistence | Joblib |
+
+## 📁 Project Structure
 
 ```text
-Labeled BitcoinHeist data ──> preprocessing ──> feature engineering
-                                      │
-                                      ├──> supervised model benchmarking
-                                      │
-Unlabeled wallet data ────────────────┴──> Isolation Forest
-                                                   │
-                           validation calibration ─┘
-                                      │
-                              hybrid risk score
-                                      │
-                        held-out evaluation / prediction
-                                      │
-                         CLI + Streamlit dashboard
-```
-
-## Repository layout
-
-```text
-.
-├── app.py                  # CLI entry point
-├── train.py                # Training, tuning and evaluation pipeline
-├── predict.py              # Prediction interface
-├── config.py               # Paths and model configuration
-├── preprocessing.py        # Dataset loading, encoding and scaling
-├── feature_engineering.py  # Wallet-behavior features
-├── models.py               # Classifier and sampler registries
-├── ensemble.py             # Supervised + anomaly-score ensemble
-├── evaluation.py           # Classification metrics and comparison tables
-├── explainability.py       # Optional SHAP/LIME explanations
-├── utils.py                # Logging, timing and JSON helpers
+ransomware-detection-engine/
+├── app.py                      # Command-line entry point
+├── train.py                    # Main model training pipeline
+├── predict.py                  # CSV prediction entry point
+├── config.py                   # Dataset paths and model configuration
+├── preprocessing.py            # Data loading, encoding and scaling
+├── feature_engineering.py       # Wallet-behavior features
+├── models.py                   # Model and sampler definitions
+├── ensemble.py                 # Supervised + anomaly ensemble
+├── evaluation.py                # Metrics and comparison reports
+├── explainability.py            # SHAP/LIME explanation support
+├── utils.py                     # Shared utilities
 ├── streamlit_app/
-│   └── main.py              # Interactive dashboard
-├── dataset/                # Place datasets here (not committed)
-├── models/                 # Generated model artifacts (not committed)
-├── reports/                # Generated reports (not committed)
-├── images/
+│   └── main.py                  # Interactive web dashboard
+├── dataset/                     # Input datasets (not committed)
+├── models/                      # Generated model artifacts
+├── reports/                     # Evaluation and prediction outputs
+├── images/                      # Screenshots
 ├── notebooks/
 ├── requirements.txt
+├── .gitignore
 ├── LICENSE
-└── .gitignore
+└── README.md
 ```
 
-## Dataset
+## ⚙️ Installation & Setup (Windows)
 
-The pipeline is configured for the [UCI BitcoinHeist Ransomware Address Dataset](https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset).
+### 1. Install prerequisites
 
-Place the required files in `dataset/`:
+Install **Python 3.10 or newer** and Git. During Python installation, enable **Add Python to PATH**.
 
-- `BitcoinHeistData.csv.zip` — labeled dataset.
-- `no_label.csv` — unlabeled wallet records used to fit the anomaly detector.
+- Python: https://www.python.org/downloads/
+- Git: https://git-scm.com/downloads
+- VS Code (recommended): https://code.visualstudio.com/
 
-The dataset is not included in this repository. Follow the dataset's terms and cite the source when using it. You can override the default paths with `SUPERVISED_DATA_PATH` and `UNLABELED_DATA_PATH` environment variables.
+### 2. Clone the repository
 
-## Setup
+Open PowerShell or the VS Code terminal and run:
 
-Python 3.10 or later is recommended.
-
-```bash
+```powershell
 git clone https://github.com/Kcreation25/ransomware-detection-engine.git
 cd ransomware-detection-engine
+```
 
+### 3. Create and activate a virtual environment
+
+```powershell
 python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS / Linux:
-source .venv/bin/activate
+.\.venv\Scripts\Activate.ps1
+```
 
+If PowerShell blocks activation, use Command Prompt instead:
+
+```bat
+.venv\Scripts\activate.bat
+```
+
+### 4. Install dependencies
+
+```powershell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Optional libraries (XGBoost, LightGBM, CatBoost, Optuna, SHAP and LIME) are listed in `requirements.txt`. Some are used only for optional model families or explainability.
+### 5. Prepare the datasets
 
-## Run
+The pipeline is configured for the [UCI BitcoinHeist Ransomware Address Dataset](https://archive.ics.uci.edu/dataset/526/bitcoinheistransomwareaddressdataset).
 
-After placing both datasets in `dataset/`:
+Place the files at the paths configured in `config.py`:
 
-```bash
-# Train models, calibrate the ensemble and save artifacts
-python train.py
-
-# Or use the CLI dispatcher
-python app.py train
-
-# Score a CSV containing wallet features
-python predict.py path/to/wallets.csv
-
-# Launch the dashboard
-streamlit run streamlit_app/main.py
-# Or:
-python app.py dashboard
+```text
+dataset/
+├── BitcoinHeistData.csv.zip
+└── no_label.csv
 ```
 
-Training writes model artifacts under `models/` and evaluation outputs under `reports/`. These generated files are excluded from Git by `.gitignore`; reproduce them locally by running the training pipeline.
+The labeled dataset is used for supervised training. The separate unlabeled data is intended for the Isolation Forest component. Use independent wallet records where possible; overlapping addresses can undermine the validity of the anomaly-training/evaluation setup. Do not upload datasets to a public repository unless their license and redistribution terms allow it.
 
-## Evaluation notes
+### 6. Train the model
 
-The dataset is imbalanced, so accuracy alone can be misleading. Review precision, recall, F1, PR-AUC, ROC-AUC, MCC and the confusion matrix together. Reported metrics are data- and configuration-dependent; this repository does not claim benchmark results without a completed run.
+From the repository root:
 
-## Responsible use
+```powershell
+python train.py
+```
 
-- Use only datasets and wallet information you are authorized to analyze.
-- A model score is an indicator for further review, not a definitive attribution.
-- Do not use predictions as the sole basis for accusations, sanctions or other consequential decisions.
-- Keep datasets, credentials, environment files and generated sensitive artifacts out of version control.
+Training may take considerable time and memory depending on dataset size, hardware and configured model search. Successful training writes model artifacts under `models/` and evaluation reports under `reports/`.
 
-## License
+### 7. Run predictions
 
-Released under the MIT License. See [LICENSE](LICENSE).
+After training has created the required model artifacts:
 
+```powershell
+python predict.py path\to\wallets.csv
+```
 
-## Expected generated outputs
+Replace the example path with a CSV containing the wallet features expected by the project.
 
-The repository contains the source code, not pre-trained results. The `dataset/`, `models/` and `reports/` folders start with placeholders. After you add the input data and successfully run training, the project should generate:
+### 8. Launch the dashboard
+
+```powershell
+streamlit run streamlit_app/main.py
+```
+
+Open the local address printed in the terminal, usually:
+
+```text
+http://localhost:8501
+```
+
+## 🧠 Main Code and Outputs
+
+- **Main training code:** `train.py`
+- **Prediction code:** `predict.py`
+- **Dashboard code:** `streamlit_app/main.py`
+- **Model definitions:** `models.py`
+- **Hybrid detection logic:** `ensemble.py`
+- **Data preparation:** `preprocessing.py` and `feature_engineering.py`
+- **Configuration:** `config.py`
+
+Expected generated artifacts after a successful training run:
 
 ```text
 models/
@@ -143,50 +179,43 @@ reports/
 └── model_comparison.csv
 ```
 
-A predictions CSV is generated when you run the prediction workflow. These files are intentionally ignored by Git so that large datasets and machine-specific model binaries are not accidentally committed. **No accuracy, F1 score or other result is claimed until you run the pipeline on the dataset.**
+Prediction runs may also create prediction result files under `reports/`, depending on the prediction command and configuration.
 
-## Windows quick-start checklist
+Generated model binaries, datasets and run-specific outputs may be excluded from Git by `.gitignore`. Recreate them locally by running the pipeline.
 
-1. Install Python 3.10 or newer.
-2. Clone this repository and open the project folder in VS Code or PowerShell.
-3. Create and activate the virtual environment using the commands above.
-4. Install dependencies with `python -m pip install -r requirements.txt`.
-5. Download the BitcoinHeist dataset from UCI and place the labeled file at the path expected by `config.py`.
-6. Prepare the separate unlabeled CSV required by the Isolation Forest branch and place it at the path expected by `config.py`. Do not rename it blindly; check the configured filename first.
-7. Run `python train.py` and wait for training to finish.
-8. Confirm that model files and the model-comparison report were created.
-9. Start the dashboard with `streamlit run streamlit_app/main.py`.
+## 📊 Preliminary Evaluation
 
-If training stops with a missing-file error, check the exact filenames and paths in `config.py` before changing code. Keep the original dataset and generated model files on your computer; do not upload them to a public repository unless you have checked their licensing, size and privacy implications.
+A preliminary prototype evaluation was performed on a 200,000-row sample. The recorded sample metrics were:
 
-
-## Preview training results (2026-11-01)
-
-A quick prototype run was completed on a **200,000-row stratified sample**, using one class-weighted Random Forest configuration. Held-out sample metrics: **F1 0.368**, **ROC-AUC 0.869**, **PR-AUC 0.326**. These are preview results, not full-dataset benchmark claims. The confusion matrix and limitations are documented in [reports/run_summary.md](reports/run_summary.md); the model comparison is in [reports/model_comparison.csv](reports/model_comparison.csv), and calibrated model metadata is in [models/metadata.json](models/metadata.json).
-
-The supplied `no label.csv` addresses all occur in the full labeled dataset. The training code should therefore prevent overlap and fit the anomaly detector on the training split only when no independent unlabeled rows remain. The complete benchmark and live Streamlit execution have not yet been completed.
-
-## Reproducible preview run (2026-11-01)
-
-A quick prototype run was performed using a stratified 200,000-row sample from the supplied 2,916,697-row labeled dataset. The run used a Random Forest with class weighting and an Isolation Forest trained on the training split because the supplied separate unlabeled file contained no independent wallet addresses after overlap checking.
-
-| Metric | Held-out preview result |
+| Metric | Preview result |
 |---|---:|
-| Accuracy | 0.9802 |
-| Balanced accuracy | 0.6967 |
-| Precision | 0.3367 |
-| Recall | 0.4049 |
-| F1 | 0.3677 |
-| MCC | 0.3593 |
-| ROC-AUC | 0.8695 |
-| PR-AUC | 0.3262 |
+| Accuracy | 98.02% |
+| Precision | 33.67% |
+| Recall | 40.49% |
+| F1-score | 36.77% |
+| ROC-AUC | 86.95% |
+| PR-AUC | 32.62% |
 
-The run used 130,000 training, 30,000 validation and 40,000 held-out test rows. These are **prototype/sample metrics**, not full-dataset benchmark results. Because the target is imbalanced, accuracy alone is not an adequate performance measure. Review recall, precision, F1, PR-AUC and the confusion matrix together. Full run details are in [reports/run_summary.md](reports/run_summary.md), with the comparison row in [reports/model_comparison.csv](reports/model_comparison.csv).
+**Important:** These are preliminary sample results, not full-dataset benchmark results. The dataset is imbalanced, so accuracy should not be interpreted on its own. Consider precision, recall, F1-score, PR-AUC, MCC and the confusion matrix together. Re-run the full evaluation before presenting final performance claims.
 
-A 1,000-row prediction smoke test was also run on the supplied unlabeled file. Its output is represented by [reports/predictions_sample.csv](reports/predictions_sample.csv); predictions are model risk flags, not verified ground truth.
+See [the prototype run summary](reports/run_summary.md) and [model comparison report](reports/model_comparison.csv) for additional context.
 
-### Generated artifacts and repository policy
+## ⚠️ Disclaimer
 
-The fitted model binary is approximately 49 MB. It is intentionally not committed in this source repository; large generated binaries should be distributed through Git LFS or a versioned release asset. The local project bundle contains the fitted artifact. The scaler, encoder and metadata are small; metadata is committed at [models/metadata.json](models/metadata.json). Recreate the model in your environment by following the training instructions above.
+This project is developed for academic research and educational purposes. A model prediction is a risk signal for further review, not definitive proof of ransomware involvement, criminal activity or wallet ownership. Do not use predictions as the sole basis for accusations, sanctions or other consequential decisions.
 
-The labeled and unlabeled datasets are not committed. They are large third-party datasets and should be downloaded/managed separately in accordance with their source terms.
+## 📄 License
+
+This project is distributed under the MIT License. See [LICENSE](LICENSE).
+
+## 👨‍💻 Author
+
+**Komal Singh**  
+Computer Science & Engineering Student  
+AI & Machine Learning Enthusiast
+
+Interested in Machine Learning, Artificial Intelligence and Data Science.
+
+---
+
+⭐ If you find this project useful, consider starring the repository.
