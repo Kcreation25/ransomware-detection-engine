@@ -1,0 +1,33 @@
+{
+  "best_pipeline_key": "random_forest__class_weight",
+  "hybrid_weight_supervised": 0.95,
+  "hybrid_threshold": 0.14,
+  "test_metrics": {
+    "accuracy": 0.980225,
+    "balanced_accuracy": 0.6967207229989799,
+    "precision": 0.3367496339677892,
+    "recall": 0.40492957746478875,
+    "f1": 0.3677058353317346,
+    "mcc": 0.3593173101358708,
+    "roc_auc": 0.8694893321431938,
+    "pr_auc": 0.3262318485268982
+  },
+  "feature_columns": [
+    "year",
+    "day",
+    "length",
+    "weight",
+    "count",
+    "looped",
+    "neighbors",
+    "income",
+    "loop_ratio",
+    "neighbor_density",
+    "avg_income_per_tx",
+    "income_per_weight",
+    "is_short_chain",
+    "day_sin",
+    "day_cos"
+  ],
+  "run_type": "200,000-row stratified preview; not full dataset benchmark"
+}
