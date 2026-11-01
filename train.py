@@ -14,7 +14,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
-from sklearn.pipeline import Pipeline
+from imblearn.pipeline import Pipeline
 import config
 from ensemble import HybridDetector
 from evaluation import build_comparison_table, compute_metrics, confusion_matrix_frame
