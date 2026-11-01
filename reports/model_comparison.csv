@@ -1,0 +1,2 @@
+model,accuracy,balanced_accuracy,precision,recall,f1,mcc,roc_auc,pr_auc,train_seconds
+random_forest__class_weight,0.986133,0.524462,0.656250,0.049296,0.091703,0.177328,0.871289,0.275731,4.627048
