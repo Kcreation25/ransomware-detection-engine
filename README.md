@@ -158,3 +158,10 @@ A predictions CSV is generated when you run the prediction workflow. These files
 9. Start the dashboard with `streamlit run streamlit_app/main.py`.
 
 If training stops with a missing-file error, check the exact filenames and paths in `config.py` before changing code. Keep the original dataset and generated model files on your computer; do not upload them to a public repository unless you have checked their licensing, size and privacy implications.
+
+
+## Preview training results (2026-11-01)
+
+A quick prototype run was completed on a **200,000-row stratified sample**, using one class-weighted Random Forest configuration. Held-out sample metrics: **F1 0.368**, **ROC-AUC 0.869**, **PR-AUC 0.326**. These are preview results, not full-dataset benchmark claims. The confusion matrix and limitations are documented in [reports/run_summary.md](reports/run_summary.md); the model comparison is in [reports/model_comparison.csv](reports/model_comparison.csv), and calibrated model metadata is in [models/metadata.json](models/metadata.json).
+
+The supplied `no label.csv` addresses all occur in the full labeled dataset. The training code should therefore prevent overlap and fit the anomaly detector on the training split only when no independent unlabeled rows remain. The complete benchmark and live Streamlit execution have not yet been completed.
