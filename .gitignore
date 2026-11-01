@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Datasets are intentionally excluded; download the UCI dataset as described in README.md.
+dataset/*.csv
+dataset/*.zip
+!dataset/.gitkeep
+
+# Generated model artifacts and reports are reproducible and should not be committed.
+models/*.pkl
+!models/.gitkeep
+reports/*.csv
+!reports/.gitkeep
+
+.env
+.venv/
+venv/
+.DS_Store
