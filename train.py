@@ -84,7 +84,16 @@ def main() -> None:
     df_unlabeled = load_csv(config.UNLABELED_DATA_PATH)
     prepared = split_features_target(df_supervised, is_supervised=True)
     X, y = prepared.X, prepared.y
-    X_unlabeled = split_features_target(df_unlabeled, is_supervised=False).X
+    unlabeled_prepared = split_features_target(df_unlabeled, is_supervised=False)
+    X_unlabeled = unlabeled_prepared.X
+
+    # Prevent transductive leakage: remove addresses already present in the
+    # labeled dataset before fitting the unsupervised anomaly detector.
+    if prepared.address is not None and unlabeled_prepared.address is not None:
+        known_addresses = set(prepared.address.astype(str))
+        unseen_mask = ~unlabeled_prepared.address.astype(str).isin(known_addresses)
+        X_unlabeled = X_unlabeled.loc[unseen_mask].copy()
+        log.info("Unlabeled rows with unseen addresses: %d", len(X_unlabeled))
     X_train_full, X_test, y_train_full, y_test = train_test_split(X, y, test_size=config.TEST_SIZE, stratify=y, random_state=config.RANDOM_STATE)
     val_fraction = config.VALIDATION_SIZE / (1 - config.TEST_SIZE)
     X_train, X_val, y_train, y_val = train_test_split(X_train_full, y_train_full, test_size=val_fraction, stratify=y_train_full, random_state=config.RANDOM_STATE)
@@ -92,6 +101,14 @@ def main() -> None:
     X_train = add_engineered_features(X_train)
     X_val = add_engineered_features(X_val)
     X_test = add_engineered_features(X_test)
+    if X_unlabeled.empty:
+        # With no independent unlabeled addresses available, train the
+        # Isolation Forest on the training split only (never val/test rows).
+        log.warning(
+            "No independent unlabeled addresses remain after leakage check; "
+            "fitting Isolation Forest on X_train only."
+        )
+        X_unlabeled = X_train.copy()
     X_unlabeled = add_engineered_features(X_unlabeled)
     encoder = CategoricalEncoder().fit(X_train)
     X_train_enc = encoder.transform(X_train)
